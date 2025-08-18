@@ -1,18 +1,17 @@
-const { v4: uuid } = require("uuid");
+const { v4: uuid } = require('uuid');
 const bcrypt = require('bcrypt');
+const { z } = require('zod');
 const { registerSchema, loginSchema } = require('../utils/user-validation');
 const { createUser, findByEmail, findByUsername } = require('../repositories/user-repository');
 const { generateToken } = require('../utils/generate-token');
-const e = require('express');
 
 async function register(req, res) {
     try {
         const parsed = registerSchema.parse(req.body);
-
         const emailExists = await findByEmail(parsed.email);
 
         if (emailExists) {
-            return res.status(400).json({ error: 'Email já cadastrado' });
+            return res.status(400).json({ error: 'E-mail já cadastrado.' });
         }
 
         const usernameExists = await findByUsername(parsed.username);
@@ -38,12 +37,9 @@ async function register(req, res) {
             user: created,
         });
     } catch (err) {
-        if (err.errors) {
-            return res.status(400).json({ error: err.errors });
+        if (err instanceof z.ZodError) {
+            return res.status(400).json({ error: err.errors.map((e) => e.message) });
         }
-
-        console.log(err);
-
         return res.status(500).json({ error: 'Erro ao registrar usuário' });
     }
 }
@@ -52,7 +48,7 @@ async function login(req, res) {
     try {
         const parsed = loginSchema.parse(req.body);
         let user = null;
-
+        
         if (parsed.email) {
             user = await findByEmail(parsed.email);
         }
@@ -73,14 +69,27 @@ async function login(req, res) {
 
         const token = generateToken({ id: user.id, username: user.username, role: user.role });
 
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 60 * 60 * 1000,
+            path: '/',
+        });
+
         return res.json({ message: 'Login realizado com sucesso', token });
     } catch (err) {
-        if (err.errors) {
-            return res.status(400).json({ error: err.errors });
+        if (err instanceof z.ZodError) {
+            return res.status(400).json({ error: err.errors.map((e) => e.message) });
         }
 
         return res.status(500).json({ error: 'Erro ao realizar login' });
     }
 }
 
-module.exports = { register, login };
+function logout(_req, res) {
+    res.clearCookie('token', { path: '/' });
+    return res.json({ message: 'Logout efetuado' });
+}
+
+module.exports = { register, login, logout };

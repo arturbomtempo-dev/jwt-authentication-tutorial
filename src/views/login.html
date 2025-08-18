@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Login</title>
+        <link rel="stylesheet" href="/public/css/style.css" />
+    </head>
+    <body>
+        <h2>Login</h2>
+        <form id="loginForm">
+            <input name="email" type="email" placeholder="Email (ou preencha username abaixo)" />
+            <input name="username" type="text" placeholder="Username (alternativo)" />
+            <input name="password" type="password" placeholder="Senha" required />
+            <button type="submit">Entrar</button>
+        </form>
+        <button id="logoutBtn">Logout</button>
+        <pre id="out"></pre>
+
+        <script src="/public/js/login.js"></script>
+    </body>
+</html>

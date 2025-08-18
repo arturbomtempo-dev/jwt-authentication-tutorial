@@ -1,0 +1,27 @@
+body {
+    font-family: system-ui, sans-serif;
+    margin: 24px;
+}
+
+form {
+    display: grid;
+    gap: 8px;
+    max-width: 360px;
+    margin: 12px 0;
+}
+
+input,
+select,
+button {
+    padding: 8px;
+}
+
+pre {
+    background: #f6f7f9;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+nav a {
+    margin-right: 8px;
+}

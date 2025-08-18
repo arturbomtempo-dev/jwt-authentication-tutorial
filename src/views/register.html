@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Cadastro</title>
+        <link rel="stylesheet" href="/public/css/style.css" />
+    </head>
+    <body>
+        <h2>Cadastro</h2>
+        <form id="registerForm">
+            <input name="email" type="email" placeholder="Email" required />
+            <input name="username" type="text" placeholder="Username" required />
+            <input name="password" type="password" placeholder="Senha (min 8)" required />
+            <select name="role">
+                <option value="user" selected>User</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button type="submit">Cadastrar</button>
+        </form>
+        <pre id="out"></pre>
+
+        <script src="/public/js/register.js"></script>
+    </body>
+</html>

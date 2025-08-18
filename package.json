@@ -21,6 +21,7 @@
     "homepage": "https://github.com/arturbomtempo-dev/jwt-authentication-tutorial#readme",
     "dependencies": {
         "bcrypt": "^6.0.0",
+        "cookie-parser": "^1.4.7",
         "dotenv": "^17.2.1",
         "express": "^5.1.0",
         "jsonwebtoken": "^9.0.2",
