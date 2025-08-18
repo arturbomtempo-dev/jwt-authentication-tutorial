@@ -1,7 +1,9 @@
+const { v4: uuid } = require("uuid");
 const bcrypt = require('bcrypt');
 const { registerSchema, loginSchema } = require('../utils/user-validation');
 const { createUser, findByEmail, findByUsername } = require('../repositories/user-repository');
 const { generateToken } = require('../utils/generate-token');
+const e = require('express');
 
 async function register(req, res) {
     try {
@@ -22,6 +24,7 @@ async function register(req, res) {
         const hashed = await bcrypt.hash(parsed.password, 10);
 
         const userToInsert = {
+            id: uuid(),
             email: parsed.email,
             username: parsed.username,
             password: hashed,
@@ -38,6 +41,8 @@ async function register(req, res) {
         if (err.errors) {
             return res.status(400).json({ error: err.errors });
         }
+
+        console.log(err);
 
         return res.status(500).json({ error: 'Erro ao registrar usuário' });
     }
