@@ -10,15 +10,20 @@ form.addEventListener('submit', async (e) => {
     const username = (fd.get('username') || '').trim();
     const password = (fd.get('password') || '').trim();
 
-    // Verificação simples: precisa preencher password e pelo menos email ou username
     if (!password || (!email && !username)) {
         out.textContent = 'Preencha email ou username e senha para logar.';
         return;
     }
 
     const payload = { password };
-    if (email) payload.email = email;
-    if (username) payload.username = username;
+
+    if (email) {
+        payload.email = email;
+    }
+
+    if (username) {
+        payload.username = username;
+    }
 
     try {
         const res = await fetch('/auth/login', {
@@ -27,8 +32,8 @@ form.addEventListener('submit', async (e) => {
             body: JSON.stringify(payload),
         });
 
-        // Tenta converter para JSON; se falhar, mostra texto
         let data;
+
         try {
             data = await res.json();
         } catch {
@@ -45,11 +50,13 @@ logoutBtn.addEventListener('click', async () => {
     try {
         const res = await fetch('/auth/logout', { method: 'POST' });
         let data;
+
         try {
             data = await res.json();
         } catch {
             data = { error: 'Resposta inválida do servidor' };
         }
+        
         out.textContent = JSON.stringify(data, null, 2);
     } catch (err) {
         out.textContent = err?.message || 'Erro no logout';

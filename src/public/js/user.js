@@ -3,9 +3,7 @@ const out = document.getElementById('out');
 
 btn.addEventListener('click', async () => {
     try {
-        const res = await fetch('/user/profile', {
-            // se estivesse em domínio diferente, usar credentials: 'include'
-        });
+        const res = await fetch('/user/profile');
         const json = await res.json();
         out.textContent = JSON.stringify(json, null, 2);
     } catch (err) {
