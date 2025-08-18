@@ -34,6 +34,7 @@ async function register(req, res, next) {
         const created = await createUser(userToInsert);
 
         return res.status(201).json({
+            status: 201,
             message: 'Usuário registrado com sucesso',
             user: created,
         });
@@ -83,7 +84,8 @@ async function login(req, res, next) {
             path: '/',
         });
 
-        return res.json({
+        return res.status(200).json({
+            status: 200,
             message: 'Login realizado com sucesso',
             token,
         });
@@ -102,8 +104,9 @@ async function login(req, res, next) {
 
 function logout(_req, res) {
     res.clearCookie('token', { path: '/' });
-    return res.json({
-        message: 'Logout efetuado',
+    return res.status(200).json({
+        status: 200,
+        message: 'Logout efetuado com sucesso',
     });
 }
 

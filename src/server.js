@@ -3,13 +3,14 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const { errorHandler } = require('./utils/errorHandler');
+const setupSwagger = require('./docs/swagger');
 
 const authRoutes = require('./routes/auth-routes');
 const userRoutes = require('./routes/user-routes');
 const adminRoutes = require('./routes/admin-routes');
 
-const PORT = process.env.PORT || 3000;
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -28,6 +29,8 @@ app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 
 app.use(errorHandler);
+
+setupSwagger(app);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

@@ -1,16 +1,19 @@
 function profile(req, res) {
-    res.json({
-        message: 'Área do usuário autenticado.',
+    res.status(200).json({
+        status: 200,
+        message: 'Perfil do usuário autenticado.',
         user: {
             id: req.user.id,
             username: req.user.username,
+            email: req.user.email,
             role: req.user.role,
         },
     });
 }
 
 function publicPage(_req, res) {
-    res.json({
+    res.status(200).json({
+        status: 200,
         message: 'Página pública: acesso livre.',
     });
 }
