@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { AppError } = require('../utils/errorHandler');
 
 function authenticateToken(req, res, next) {
     const cookieToken = req.cookies?.token;
@@ -9,11 +10,14 @@ function authenticateToken(req, res, next) {
     const token = cookieToken || headerToken;
 
     if (!token) {
-        return res.status(401).json({ error: 'Token não fornecido' });
+        throw new AppError(401, 'Token não fornecido.');
     }
 
     jwt.verify(token, process.env.JWT_SECRET || 'secret', (err, user) => {
-        if (err) return res.status(403).json({ error: 'Token inválido ou expirado' });
+        if (err) {
+            throw new AppError(403, 'Token inválido ou expirado.');
+        }
+
         req.user = user;
         next();
     });

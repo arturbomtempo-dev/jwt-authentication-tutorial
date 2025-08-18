@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const { errorHandler } = require('./utils/errorHandler');
 
 const authRoutes = require('./routes/auth-routes');
 const userRoutes = require('./routes/user-routes');
@@ -26,10 +27,7 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 
-app.use((err, _req, res, _next) => {
-    console.error(err);
-    res.status(500).json({ error: 'Erro interno do servidor' });
-});
+app.use(errorHandler);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

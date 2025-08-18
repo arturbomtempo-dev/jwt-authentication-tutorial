@@ -4,20 +4,21 @@ const { z } = require('zod');
 const { registerSchema, loginSchema } = require('../utils/user-validation');
 const { createUser, findByEmail, findByUsername } = require('../repositories/user-repository');
 const { generateToken } = require('../utils/generate-token');
+const { AppError } = require('../utils/errorHandler');
 
-async function register(req, res) {
+async function register(req, res, next) {
     try {
         const parsed = registerSchema.parse(req.body);
         const emailExists = await findByEmail(parsed.email);
 
         if (emailExists) {
-            return res.status(400).json({ error: 'E-mail já cadastrado.' });
+            throw new AppError(400, 'E-mail já cadastrado.');
         }
 
         const usernameExists = await findByUsername(parsed.username);
 
         if (usernameExists) {
-            return res.status(400).json({ error: 'Username já cadastrado' });
+            throw new AppError(400, 'Username já cadastrado.');
         }
 
         const hashed = await bcrypt.hash(parsed.password, 10);
@@ -37,18 +38,23 @@ async function register(req, res) {
             user: created,
         });
     } catch (err) {
-        if (err instanceof z.ZodError) {
-            return res.status(400).json({ error: err.errors.map((e) => e.message) });
+        if (err instanceof AppError) {
+            return next(err);
         }
-        return res.status(500).json({ error: 'Erro ao registrar usuário' });
+
+        if (err instanceof z.ZodError) {
+            return next(new AppError(400, err.errors.map((e) => e.message).join(', ')));
+        }
+
+        return next(new AppError(500, 'Erro ao registrar usuário.'));
     }
 }
 
-async function login(req, res) {
+async function login(req, res, next) {
     try {
         const parsed = loginSchema.parse(req.body);
         let user = null;
-        
+
         if (parsed.email) {
             user = await findByEmail(parsed.email);
         }
@@ -58,13 +64,13 @@ async function login(req, res) {
         }
 
         if (!user) {
-            return res.status(401).json({ error: 'Credenciais inválidas' });
+            throw new AppError(401, 'Credenciais inválidas.');
         }
 
         const ok = await bcrypt.compare(parsed.password, user.password);
 
         if (!ok) {
-            return res.status(401).json({ error: 'Credenciais inválidas' });
+            throw new AppError(401, 'Credenciais inválidas.');
         }
 
         const token = generateToken({ id: user.id, username: user.username, role: user.role });
@@ -77,19 +83,28 @@ async function login(req, res) {
             path: '/',
         });
 
-        return res.json({ message: 'Login realizado com sucesso', token });
+        return res.json({
+            message: 'Login realizado com sucesso',
+            token,
+        });
     } catch (err) {
-        if (err instanceof z.ZodError) {
-            return res.status(400).json({ error: err.errors.map((e) => e.message) });
+        if (err instanceof AppError) {
+            return next(err);
         }
 
-        return res.status(500).json({ error: 'Erro ao realizar login' });
+        if (err instanceof z.ZodError) {
+            return next(new AppError(400, err.errors.map((e) => e.message).join(', ')));
+        }
+
+        return next(new AppError(500, 'Erro ao realizar login.'));
     }
 }
 
 function logout(_req, res) {
     res.clearCookie('token', { path: '/' });
-    return res.json({ message: 'Logout efetuado' });
+    return res.json({
+        message: 'Logout efetuado',
+    });
 }
 
 module.exports = { register, login, logout };
