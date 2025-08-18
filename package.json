@@ -1,0 +1,34 @@
+{
+    "name": "jwt-authentication-tutorial",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "dev": "node --watch src/server.js",
+        "format": "prettier --write ."
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/arturbomtempo-dev/jwt-authentication-tutorial.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "type": "commonjs",
+    "bugs": {
+        "url": "https://github.com/arturbomtempo-dev/jwt-authentication-tutorial/issues"
+    },
+    "homepage": "https://github.com/arturbomtempo-dev/jwt-authentication-tutorial#readme",
+    "dependencies": {
+        "bcrypt": "^6.0.0",
+        "dotenv": "^17.2.1",
+        "express": "^5.1.0",
+        "jsonwebtoken": "^9.0.2",
+        "knex": "^3.1.0",
+        "pg": "^8.16.3",
+        "zod": "^4.0.17"
+    },
+    "devDependencies": {
+        "prettier": "^3.6.2"
+    }
+}
