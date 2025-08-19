@@ -4,7 +4,7 @@ const { z } = require('zod');
 const { registerSchema, loginSchema } = require('../utils/user-validation');
 const { createUser, findByEmail, findByUsername } = require('../repositories/user-repository');
 const { generateToken } = require('../utils/generate-token');
-const { AppError } = require('../utils/errorHandler');
+const { AppError } = require('../utils/error-handler');
 
 async function register(req, res, next) {
     try {

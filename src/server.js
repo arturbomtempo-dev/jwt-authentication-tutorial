@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-const { errorHandler } = require('./utils/errorHandler');
+const { errorHandler } = require('./utils/error-handler');
 const setupSwagger = require('./docs/swagger');
 
 const authRoutes = require('./routes/auth-routes');
