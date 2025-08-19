@@ -1,8 +1,8 @@
 {
     "name": "jwt-authentication-tutorial",
     "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
+    "description": "This project provides learning material for JWT authentication and password hashing with bcrypt in Node.js.",
+    "main": "server.js",
     "scripts": {
         "dev": "node --watch src/server.js",
         "format": "prettier --write ."
@@ -12,8 +12,8 @@
         "url": "git+https://github.com/arturbomtempo-dev/jwt-authentication-tutorial.git"
     },
     "keywords": [],
-    "author": "",
-    "license": "ISC",
+    "author": "Artur Bomtempo Colen",
+    "license": "MIT",
     "type": "commonjs",
     "bugs": {
         "url": "https://github.com/arturbomtempo-dev/jwt-authentication-tutorial/issues"
