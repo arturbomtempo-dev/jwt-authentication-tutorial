@@ -5,7 +5,11 @@
     "main": "server.js",
     "scripts": {
         "dev": "node --watch src/server.js",
-        "format": "prettier --write ."
+        "start": "node src/server.js",
+        "migrate": "knex migrate:latest --knexfile knexfile.js --env production",
+        "migrate:dev": "knex migrate:latest --knexfile knexfile.js --env development",
+        "migrate:test": "knex migrate:latest --knexfile knexfile.js --env test",
+        "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles"
     },
     "repository": {
         "type": "git",
@@ -33,6 +37,9 @@
         "zod": "^4.0.17"
     },
     "devDependencies": {
-        "prettier": "^3.6.2"
+        "cross-env": "^10.0.0",
+        "jest": "^30.0.5",
+        "prettier": "^3.6.2",
+        "supertest": "^7.1.4"
     }
 }
