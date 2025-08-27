@@ -60,21 +60,7 @@ PORT = 10000
 
 ---
 
-## Passo 4 — Criar o serviço Web (sua API)
-
-1. Clique em **New → Web Service**.
-2. Conecte seu GitHub e escolha o repositório.
-3. Configure:
-
-- **Environment**: Node
-- **Build Command**: `npm install`
-- **Start Command**: `npm start`
-
-4. Deploy será iniciado automaticamente.
-
----
-
-## Passo 5 — Configurar o Knex
+## Passo 4 — Configurar o Knex
 
 No seu `knexfile.js`, ajuste assim:
 
@@ -107,6 +93,20 @@ module.exports = {
 ```
 
 > Importante: Render exige `ssl: { rejectUnauthorized: false }` em produção.
+
+---
+
+## Passo 5 — Criar o serviço Web (sua API)
+
+1. Clique em **New → Web Service**.
+2. Conecte seu GitHub e escolha o repositório.
+3. Configure:
+
+- **Environment**: Node
+- **Build Command**: `npm install && npm run migrate`
+- **Start Command**: `npm start`
+
+4. Deploy será iniciado automaticamente.
 
 ---
 
